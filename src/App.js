@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class App extends React.Component {
   state = {
@@ -20,9 +21,11 @@ class App extends React.Component {
 
     try {
       const url = 'http://www.omdbapi.com/?i=tt3896198&apikey=4d5298cf';
-      const response = await fetch(url + '&t=' + encodeURIComponent(title));
-      const movie = await response.json();
 
+      // Realizamos la llamada usando axios
+      const response = await axios.get(url + '&t=' + encodeURIComponent(title));
+
+      const movie = response.data;
       if (movie.Response === "False") {
         throw new Error(movie.Error || "Película no encontrada");
       }
@@ -73,7 +76,7 @@ class App extends React.Component {
             <img 
               src={movie.Poster} 
               alt={`Poster de ${movie.Title}`} 
-              style={{ maxWidth: "300px" }}
+              style={{ maxWidth: "300px", width: "150px" }}
             />
             <p><strong>Director:</strong> {movie.Director}</p>
             <p><strong>Actores:</strong> {movie.Actors}</p>
